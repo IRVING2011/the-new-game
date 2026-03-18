@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server"
+
 const WHITELIST = (process.env.IP_WHITELIST || "").split(",")
 
 export const config = {
@@ -6,32 +8,38 @@ export const config = {
 
 export default function middleware(req) {
 
+  // 取得 IP
   const ip =
     req.headers.get("x-forwarded-for") ||
     req.headers.get("x-real-ip") ||
     ""
 
-  if (!WHITELIST.includes(ip)) {
-    return new Response(
-      JSON.stringify({ error: "IP not allowed" }),
-      {
-        status: 403,
-        headers: { "content-type": "application/json" }
-      }
+  // 取得網址
+  const url = new URL(req.url)
+
+  // ===== IP 白名單檢查 =====
+  if (WHITELIST.length && !WHITELIST.includes(ip)) {
+    return NextResponse.redirect(
+      new URL("/403.html", req.url)
     )
   }
 
+  // ===== Session 檢查 =====
   const cookie = req.headers.get("cookie") || ""
 
-  // 如果沒有登入 session
   if (!cookie.includes("session=valid")) {
 
-    const url = new URL(req.url)
-
-    if (url.pathname !== "/login.html" && !url.pathname.startsWith("/api/auth")) {
-      return Response.redirect(new URL("/login.html", req.url))
+    if (
+      url.pathname !== "/login.html" &&
+      url.pathname !== "/403.html" &&
+      !url.pathname.startsWith("/api/auth")
+    ) {
+      return NextResponse.redirect(
+        new URL("/login.html", req.url)
+      )
     }
 
   }
 
+  return NextResponse.next()
 }
