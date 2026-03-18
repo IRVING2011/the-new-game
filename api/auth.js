@@ -1,20 +1,15 @@
 export default function handler(req, res) {
 
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" })
+    return res.status(405).end();
   }
 
-  const { password } = req.body
+  const { password } = req.body;
 
-  if (password === process.env.GAME_PASSWORD) {
-
-    res.setHeader(
-      "Set-Cookie",
-      "session=valid; Path=/; HttpOnly; Secure; SameSite=Strict"
-    )
-
-    return res.status(200).json({ success: true })
+  if (password === process.env.PASSWORD) {
+    res.status(200).json({ success: true });
+  } else {
+    res.status(401).json({ success: false });
   }
 
-  return res.status(401).json({ error: "Wrong password" })
 }
