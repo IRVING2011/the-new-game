@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-<meta charset="UTF-8">
-<title>Game</title>
-<link rel="stylesheet" href="/style.css">
+<title>RPS Game</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
 <h1>Rock Paper Scissors</h1>
 
-<div class="buttons">
+<div>
 
-<button onclick="play('rock')">✊</button>
-<button onclick="play('paper')">✋</button>
-<button onclick="play('scissors')">✌</button>
-
-</div>
-
-<h2 id="result"></h2>
+<button class="rock" onclick="play('rock')">✊ Rock</button>
+<button class="paper" onclick="play('paper')">✋ Paper</button>
+<button class="scissors" onclick="play('scissors')">✌ Scissors</button>
 
 </div>
 
-<script src="/game.js"></script>
+<div class="result" id="result"></div>
+
+<div class="score">
+
+Player Wins: <span id="player">0</span>
+<br>
+AI Wins: <span id="ai">0</span>
+
+</div>
+
+</div>
+
+<script src="game.js"></script>
 
 </body>
-
 </html>
