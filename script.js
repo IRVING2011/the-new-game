@@ -1,62 +1,55 @@
-let playerScore = 0
-let aiScore = 0
+let playerScore=0
+let aiScore=0
 
-async function login(){
+function play(player){
 
-const password = document.getElementById("password").value
+const choices=["rock","paper","scissors"]
 
-const res = await fetch("/api/play",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-type:"login",
-password
-})
-})
+const ai=choices[Math.floor(Math.random()*3)]
 
-const data = await res.json()
-
-if(data.success){
-
-document.getElementById("login").style.display="none"
-document.getElementById("game").style.display="block"
-
-}else{
-
-document.getElementById("msg").innerText="密碼錯誤或IP未允許"
-
+const map={
+rock:"✊",
+paper:"✋",
+scissors:"✌️"
 }
 
+const playerHand=document.getElementById("playerHand")
+const aiHand=document.getElementById("aiHand")
+
+playerHand.innerText=map[player]
+aiHand.innerText=map[ai]
+
+playerHand.classList.add("animate")
+aiHand.classList.add("animate")
+
+setTimeout(()=>{
+playerHand.classList.remove("animate")
+aiHand.classList.remove("animate")
+},300)
+
+let result=""
+
+if(player===ai){
+result="平手"
 }
 
-async function play(choice){
-
-const res = await fetch("/api/play",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-type:"play",
-choice
-})
-})
-
-const data = await res.json()
-
-document.getElementById("result").innerText=data.result
-
-if(data.winner==="player"){
+else if(
+(player==="rock" && ai==="scissors")||
+(player==="paper" && ai==="rock")||
+(player==="scissors" && ai==="paper")
+){
+result="玩家勝利!"
 playerScore++
 }
 
-if(data.winner==="ai"){
+else{
+result="AI勝利!"
 aiScore++
 }
 
-document.getElementById("player").innerText=playerScore
-document.getElementById("ai").innerText=aiScore
+document.getElementById("result").innerText=result
+
+document.getElementById("playerScore").innerText=playerScore
+document.getElementById("aiScore").innerText=aiScore
 
 }
