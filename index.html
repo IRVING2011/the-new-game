@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>AI 剪刀石頭布</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="login">
+
+<h2>進入遊戲</h2>
+
+<input id="password" type="password" placeholder="輸入密碼">
+
+<button onclick="login()">進入</button>
+
+<p id="msg"></p>
+
+</div>
+
+<div id="game" style="display:none">
+
+<h1>剪刀石頭布</h1>
+
+<div class="buttons">
+
+<button onclick="play('rock')">✊</button>
+<button onclick="play('paper')">✋</button>
+<button onclick="play('scissors')">✌</button>
+
+</div>
+
+<h2 id="result"></h2>
+
+<div class="score">
+
+<p>玩家勝利: <span id="player">0</span></p>
+<p>AI勝利: <span id="ai">0</span></p>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
