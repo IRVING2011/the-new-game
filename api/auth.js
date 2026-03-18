@@ -12,16 +12,18 @@ export default function handler(req, res) {
     req.socket?.remoteAddress ||
     "";
 
-  const whitelist = (process.env.IP_WHITELIST || "").split(",");
+  const whitelist = (process.env.IP_WHITELIST || "")
+    .split(",")
+    .map(ip => ip.trim());
 
   if (!whitelist.includes(ip)) {
-    return res.status(403).json({ error: "IP not allowed" });
+    return res.status(403).json({ error: "NO_PERMISSION" });
   }
 
   if (password === process.env.PASSWORD) {
-    res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
   } else {
-    res.status(401).json({ error: "Wrong password" });
+    return res.status(401).json({ error: "WRONG_PASSWORD" });
   }
 
 }
