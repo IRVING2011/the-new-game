@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>Rock Paper Scissors</h1>
+
+<input id="password" type="password" placeholder="Enter password">
+
+<button onclick="login()">Login</button>
+
+<p id="msg"></p>
+
+</div>
+
+<script>
+
+async function login(){
+
+const password=document.getElementById("password").value
+
+const res=await fetch("/api/auth",{
+method:"POST",
+headers:{ "Content-Type":"application/json"},
+body:JSON.stringify({password})
+})
+
+const data=await res.json()
+
+if(data.success){
+
+location.href="/game.html"
+
+}else{
+
+document.getElementById("msg").innerText="Wrong password"
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
