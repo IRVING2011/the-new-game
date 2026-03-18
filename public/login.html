@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RPS Game Login</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 
 </head>
 
 <body>
 
-<div class="login-container">
+<div class="container">
 
 <h1>Rock Paper Scissors</h1>
 
@@ -42,13 +42,9 @@ body:JSON.stringify({password})
 const data = await res.json()
 
 if(data.success){
-
 window.location.href="/game.html"
-
 }else{
-
 document.getElementById("error").innerText="Wrong password"
-
 }
 
 }
