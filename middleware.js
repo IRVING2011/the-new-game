@@ -12,35 +12,35 @@ export default function middleware(req) {
     ""
 
   const url = new URL(req.url)
+  const path = url.pathname
+
+  // ===== 先放行這些頁面（避免無限跳轉） =====
+  if (
+    path === "/login.html" ||
+    path === "/403.html" ||
+    path.startsWith("/api/auth") ||
+    path.startsWith("/style") ||
+    path.startsWith("/game.js")
+  ) {
+    return
+  }
 
   // ===== IP 白名單 =====
   if (WHITELIST.length && !WHITELIST.includes(ip)) {
-
     return Response.redirect(
       new URL("/403.html", req.url),
       302
     )
-
   }
 
+  // ===== Session 檢查 =====
   const cookie = req.headers.get("cookie") || ""
 
-  // ===== 未登入 =====
   if (!cookie.includes("session=valid")) {
-
-    if (
-      url.pathname !== "/login.html" &&
-      url.pathname !== "/403.html" &&
-      !url.pathname.startsWith("/api/auth")
-    ) {
-
-      return Response.redirect(
-        new URL("/login.html", req.url),
-        302
-      )
-
-    }
-
+    return Response.redirect(
+      new URL("/login.html", req.url),
+      302
+    )
   }
 
 }
