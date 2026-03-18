@@ -7,11 +7,15 @@ export default function handler(req, res) {
     req.headers["x-forwarded-for"] ||
     req.socket.remoteAddress
 
-  if (!WHITELIST.includes(ip)) {
+  if (!WHITELIST || !WHITELIST.includes(ip)) {
     return res.status(403).json({ error: "IP not allowed" })
   }
 
-  const { password } = req.body
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" })
+  }
+
+  const { password } = req.body || {}
 
   if (password === PASSWORD) {
     return res.status(200).json({ success: true })
