@@ -30,7 +30,7 @@ aiHand.classList.remove("animate")
 let result=""
 
 if(player===ai){
-result="平手"
+result="DRAW"
 }
 
 else if(
@@ -38,12 +38,12 @@ else if(
 (player==="paper" && ai==="rock")||
 (player==="scissors" && ai==="paper")
 ){
-result="玩家勝利!"
+result="YOU WIN"
 playerScore++
 }
 
 else{
-result="AI勝利!"
+result="LOSE"
 aiScore++
 }
 
