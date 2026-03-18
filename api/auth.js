@@ -1,23 +1,18 @@
 export default function handler(req, res) {
 
-  const PASSWORD = process.env.GAME_PASSWORD
-  const WHITELIST = process.env.IP_WHITELIST?.split(",")
-
-  const ip =
-    req.headers["x-forwarded-for"] ||
-    req.socket.remoteAddress
-
-  if (!WHITELIST || !WHITELIST.includes(ip)) {
-    return res.status(403).json({ error: "IP not allowed" })
-  }
-
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" })
   }
 
-  const { password } = req.body || {}
+  const { password } = req.body
 
-  if (password === PASSWORD) {
+  if (password === process.env.GAME_PASSWORD) {
+
+    res.setHeader(
+      "Set-Cookie",
+      "session=valid; Path=/; HttpOnly; Secure; SameSite=Strict"
+    )
+
     return res.status(200).json({ success: true })
   }
 
