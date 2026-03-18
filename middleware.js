@@ -12,7 +12,6 @@ export default function middleware(req) {
     ""
 
   if (!WHITELIST.includes(ip)) {
-
     return new Response(
       JSON.stringify({ error: "IP not allowed" }),
       {
@@ -20,8 +19,19 @@ export default function middleware(req) {
         headers: { "content-type": "application/json" }
       }
     )
+  }
+
+  const cookie = req.headers.get("cookie") || ""
+
+  // 如果沒有登入 session
+  if (!cookie.includes("session=valid")) {
+
+    const url = new URL(req.url)
+
+    if (url.pathname !== "/login.html" && !url.pathname.startsWith("/api/auth")) {
+      return Response.redirect(new URL("/login.html", req.url))
+    }
 
   }
 
-  // IP合法就放行
 }

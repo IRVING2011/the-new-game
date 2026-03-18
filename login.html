@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+
+<body>
+
+<h2>Enter Password</h2>
+
+<input id="password" type="password">
+<button onclick="login()">Login</button>
+
+<script>
+async function login(){
+
+  const password = document.getElementById("password").value
+
+  const res = await fetch("/api/auth",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({password})
+  })
+
+  const data = await res.json()
+
+  if(data.success){
+    location.href="/"
+  }else{
+    alert("wrong password")
+  }
+
+}
+</script>
+
+</body>
+</html>
