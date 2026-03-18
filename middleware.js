@@ -1,46 +1,33 @@
+const WHITELIST = (process.env.IP_WHITELIST || "").split(",")
 export const config = {
   matcher: "/:path*"
 }
 
 export default function middleware(req) {
-
-  const WHITELIST = (process.env.IP_WHITELIST || "").split(",")
-
   const ip =
     req.headers.get("x-forwarded-for") ||
     req.headers.get("x-real-ip") ||
     ""
 
-  const url = new URL(req.url)
-  const path = url.pathname
-
-  // ===== 先放行這些頁面（避免無限跳轉） =====
-  if (
-    path === "/login.html" ||
-    path === "/403.html" ||
-    path.startsWith("/api/auth") ||
-    path.startsWith("/style") ||
-    path.startsWith("/game.js")
-  ) {
-    return
-  }
-
-  // ===== IP 白名單 =====
-  if (WHITELIST.length && !WHITELIST.includes(ip)) {
-    return Response.redirect(
-      new URL("/403.html", req.url),
-      302
+  // 檢查 IP 是否在白名單中
+  if (!WHITELIST.includes(ip)) {
+    return new Response(
+      JSON.stringify({ error: "IP not allowed" }),
+      {
+        status: 403,
+        headers: { "content-type": "application/json" }
+      }
     )
   }
 
-  // ===== Session 檢查 =====
   const cookie = req.headers.get("cookie") || ""
 
+  // 如果沒有登入 session，則跳轉到登入頁
   if (!cookie.includes("session=valid")) {
-    return Response.redirect(
-      new URL("/login.html", req.url),
-      302
-    )
-  }
+    const url = new URL(req.url)
 
+    if (url.pathname !== "/login.html" && !url.pathname.startsWith("/api/auth")) {
+      return Response.redirect(new URL("/login.html", req.url))
+    }
+  }
 }
