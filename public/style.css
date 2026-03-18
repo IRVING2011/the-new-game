@@ -61,3 +61,36 @@ input{
     background:#0984e3;
     color:white;
 }
+/* 右上角比分框 */
+
+.scoreboard{
+    position:absolute;
+    top:20px;
+    right:20px;
+    background:rgba(0,0,0,0.7);
+    padding:15px 25px;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,0.5);
+    font-size:16px;
+}
+
+/* 對戰畫面 */
+
+.battle{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:60px;
+    margin-top:30px;
+    font-size:60px;
+}
+
+.vs{
+    font-size:30px;
+}
+
+/* 按鈕區 */
+
+.buttons{
+    margin-top:40px;
+}
